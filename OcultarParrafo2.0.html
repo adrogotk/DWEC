@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title> Title </title>
+<style>
+body {
+    font-family: "Times New Roman", Georgia, Serif;
+    text-align: justify;}
+h1, h2, h3, h4, h5, h6 {
+  /* font-family: "Playfair Display"; */
+  text-align: center;
+  letter-spacing: 5px;
+  margin-bottom: 50px;
+}
+p{
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-right: 150px;
+  margin-left: 150px;
+}
+</style>
+</head>
+<body>
+<!--<button onclick="cerrarYAbrirParrafo(0);">Ocultar Parrafo 1</button>
+<button onclick="cerrarYAbrirParrafo(1);">Ocultar Parrafo 2</button>
+<button onclick="cerrarYAbrirParrafo(2);">Ocultar Parrafo 3</button>
+<button onclick="cerrarYAbrirParrafo(3);">Ocultar Parrafo 4</button>
+<button onclick="cerrarYAbrirParrafo(4);">Ocultar Parrafo 5</button>
+<button onclick="cerrarYAbrirParrafo(5);">Ocultar Parrafo 6</button> -->
+<br><br><button id="modificar">Modificar Parrafo</button><br>
+<button id="añadir">AñadirParrafo</button><br>
+<button id="eliminar">Eliminar Parrafo</button><br>
+<input type="number" id="parrafo" value="0"><br>
+<textarea id="texto">Escribe el texto aqui</textarea><br>
+<h1> Julio Cortázar</h1>
+<p>Julio  Cortázar  fue un escritor, traductor e intelectual <a href="https://es.wikipedia.org/wiki/Argentina">argentino</a>. Sin renunciar a su nacionalidad <a href="https://es.wikipedia.org/wiki/Argentina">argentina</a>, optó por la nacionalidad francesa en 1981, en protesta contra el régimen militar <a href="https://es.wikipedia.org/wiki/Argentina">argentino</a>.</p>
+<p>Es considerado uno de los autores más innovadores y originales de su tiempo, maestro del cuento, la prosa poética y la narración breve en general, y creador de importantes novelas que inauguraron una nueva forma de hacer literatura en el mundo hispano, rompiendo los moldes clásicos mediante narraciones que escapan de la linealidad temporal. Debido a que los contenidos de su obra transitan en la frontera entre lo real y lo fantástico, suele ser puesto en relación con el realismo mágico e incluso con el surrealismo.</p>
+<p>Vivió tanto la infancia como la adolescencia e incipiente madurez en <a href="https://es.wikipedia.org/wiki/Argentina">Argentina</a> y, desde la década de 1950, en Europa. Residió en Italia, España, Suiza y Francia, país donde se estableció en 1951 y en el que ambientó algunas de sus obras.</p>
+<p>Además de escritor, fue también un reconocido traductor, oficio que desempeñó, entre otros, para la <a href="https://es.unesco.org/">Unesco</a>.​</p>
+<p>En 1983, vuelta la democracia en <a href="https://es.wikipedia.org/wiki/Argentina">Argentina</a>, Cortázar hizo un último viaje a su patria, donde es recibido cálidamente por sus admiradores, que lo paran en la calle y le piden <a href="https://es.unesco.org/"></a>autógrafos, en contraste con la indiferencia de las autoridades nacionales.</p>
+<p>En <a href="https://es.wikipedia.org/wiki/Par%C3%ADs">París</a>, vivió sus últimos años en dos casas, una en la rue Martel y otra en la rue de L'Eperon. La primera correspondía a un pequeño apartamento de tercer piso sin ascensor, cómodo, luminoso y lleno de libros y discos de música, donde solía recibir amablemente continuas visitas de otros escritores que pasaban por la ciudad, en compañía de su gata.</p>
+<script>
+    var nParrafo=0;
+    var texto="";
+    var contenido=document.getElementsByTagName('body')[0];
+    function inicializar(){
+    nParrafo = document.getElementById("parrafo").value;
+    texto = document.getElementById("texto").value;
+    }
+    function contarParrafos(){
+        var contadorParrafos=0;
+        
+        for (var i=0; i<contenido.childNodes.length; i++) {
+            if (contenido.childNodes[i].tagName==='P'){
+                contadorParrafos++;
+            }
+        }
+        return contadorParrafos;
+    }
+function cerrarYAbrirParrafo(parrafo){
+    var parrafoNuevo=contenido.getElementsByTagName('p')[parrafo];
+    var antiguoBoton= contenido.getElementsByTagName('button')[parrafo];
+    var textoBotonAntiguo=antiguoBoton.textContent;
+    if (parrafoNuevo.style.display==='none') {
+      parrafoNuevo.style.display='block';
+        var textoBotonNuevo=textoBotonAntiguo.replace('Mostrar', 'Cerrar');
+
+    }
+    else{
+     parrafoNuevo.style.display='none';
+        var textoBotonNuevo=textoBotonAntiguo.replace('Cerrar', 'Mostrar');
+    }
+    antiguoBoton.textContent=textoBotonNuevo;
+}
+function modificarParrafo(){
+    inicializar();
+    if (nParrafo<1 || nParrafo>contarParrafos()){
+        alert("no se puede modificar");
+    }
+    else{
+    var parrafoModificado=contenido.getElementsByTagName('p')[nParrafo-1];
+    var nuevoNodoTexto=document.createTextNode(texto);
+    var nuevoTexto=nuevoNodoTexto.textContent;
+    parrafoModificado.textContent=nuevoTexto;
+    }
+}
+function eliminarParrafo(){
+    inicializar();
+    var parrafoAEliminar=contenido.getElementsByTagName('p')[parseInt(nParrafo)-1];
+    if (typeof(parrafoAEliminar) == "undefined") {
+         alert("no se puede eliminar");
+    }
+    else{
+        contenido.removeChild(parrafoAEliminar);
+        eliminarBoton();
+    }
+}
+function añadirParrafo(){
+    inicializar();
+    if (nParrafo<1){
+        alert("no se puede añadir");
+    }
+    else {
+        if(nParrafo>contarParrafos()+1){
+        alert("Se añadirá al final");
+        }
+    var parrafoAntiguo=contenido.getElementsByTagName('p')[nParrafo-1];
+    var textoAAñadir=document.createTextNode(texto);
+    var parrafoAAñadir=document.createElement('p');
+    parrafoAAñadir.appendChild(textoAAñadir);
+    contenido.insertBefore(parrafoAAñadir, parrafoAntiguo);
+    añadirBoton();
+         }
+    
+    
+}
+    document.getElementById("modificar").addEventListener("click", modificarParrafo);
+    document.getElementById("añadir").addEventListener("click", añadirParrafo);
+    document.getElementById("eliminar").addEventListener("click", eliminarParrafo);
+function añadirBoton() {
+        var nParrafos=contarParrafos();
+        var nodoPosterior=document.getElementsByTagName('br')[0]
+        var nuevoTexto="Cerrar Parrafo" + nParrafos;
+        var textoBoton=document.createTextNode(nuevoTexto);
+        var boton= document.createElement("button");
+        boton.setAttribute("onclick", "cerrarYAbrirParrafo(" + nParrafos + ")");
+        boton.appendChild(textoBoton);
+        contenido.insertBefore(boton, nodoPosterior);
+}
+function eliminarBoton() {
+        var nParrafos=contarParrafos();
+        var botonAEliminar=document.getElementsByTagName("button")[nParrafos];
+        contenido.removeChild(botonAEliminar);
+}
+function crearBotones(){
+    var nParrafos=contarParrafos();
+    var parrafoNuevo=new Array();
+    for (var i=nParrafos-1; i>=0; i--) {
+        var nuevoTexto="Cerrar Parrafo " + (i+1);
+        var textoBoton=document.createTextNode(nuevoTexto);
+        var boton= document.createElement("button");
+        boton.setAttribute("onclick", "cerrarYAbrirParrafo(" + i + ")");
+        boton.appendChild(textoBoton);
+        contenido.insertBefore(boton, contenido.firstChild);
+    }
+}
+crearBotones();
+</script>
+</body>
+</html>
