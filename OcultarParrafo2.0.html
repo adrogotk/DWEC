@@ -44,7 +44,50 @@ p{
 <p>En <a href="https://es.wikipedia.org/wiki/Par%C3%ADs">París</a>, vivió sus últimos años en dos casas, una en la rue Martel y otra en la rue de L'Eperon. La primera correspondía a un pequeño apartamento de tercer piso sin ascensor, cómodo, luminoso y lleno de libros y discos de música, donde solía recibir amablemente continuas visitas de otros escritores que pasaban por la ciudad, en compañía de su gata.</p>
 <script>
         var contenido=document.getElementsByTagName('body')[0];
-        window.onkeydown = function(e){
+        contenido.addEventListener("keydown", function(e){
+        var color="";
+        if (e.altKey){
+        contenido.addEventListener("keydown", function(e2){
+          if (e2.key==='a'){
+            color="blue";
+            cambiarColor(color);
+        }
+        else if(e2.key==='r') {
+            color="red";
+            cambiarColor(color);
+        }
+        else if(e2.key==='v') {
+            color="green";
+            cambiarColor(color);
+        }
+        else if (e2.key==='n'){
+            for (var i=0; i<contenido.childNodes.length;i++) {
+                if (contenido.childNodes[i].tagName==='P'){
+                    for (var j=0; j<contenido.childNodes[i].childNodes.length;j++){
+                        if (contenido.childNodes[i].childNodes[j].tagName==='A'){
+                          contenido.childNodes[i].childNodes[j].addEventListener("click", anularEnlaces);
+                        }
+                    }
+
+                }
+            }
+        }
+        else if (e2.key==='s'){
+               for (var i=0; i<contenido.childNodes.length;i++) {
+                if (contenido.childNodes[i].tagName==='P'){
+                    for (var j=0; j<contenido.childNodes[i].childNodes.length;j++){
+                        if (contenido.childNodes[i].childNodes[j].tagName==='A'){
+                          contenido.childNodes[i].childNodes[j].removeEventListener("click", anularEnlaces);
+                        }
+                    }
+
+                }
+            }
+        }                          
+        })
+        }
+                                   });
+        /*window.onkeydown = function(e){
         var color="";
         if (e.altKey) {
         window.onkeydown=function(e2){
@@ -76,7 +119,6 @@ p{
                for (var i=0; i<contenido.childNodes.length;i++) {
                 if (contenido.childNodes[i].tagName==='P'){
                     for (var j=0; j<contenido.childNodes[i].childNodes.length;j++){
-                        console.log(contenido.childNodes[i].childNodes[j]);
                         if (contenido.childNodes[i].childNodes[j].tagName==='A'){
                           contenido.childNodes[i].childNodes[j].removeEventListener("click", anularEnlaces);
                         }
@@ -87,7 +129,7 @@ p{
         }
         }
         }
-    };
+    };*/
     var nParrafo=0;
     var texto="";
     function cambiarColor(color){
@@ -104,19 +146,43 @@ p{
         return e.timeStamp;
         
     }*/
-    window.onclick=function (e){
+    
+    /*contenido.addEventListener("click", function(e){
         var t1=e.timeStamp;
-        console.log("a");
-        window.onclick=function (e2){
-            var t2=e2.timeStamp;
-            console.log("aa");
-            window.onclick=function (e3){
-                console.log("aaa");
+        console.log(t1);
+        contenido.addEventListener("click", function(e2){
+           var t2=e2.timeStamp; 
+            console.log(t2);
+           contenido.addEventListener("click", function(e3){
                 var t3=e3.timeStamp;
+                 console.log(t1);
+                 console.log(t2);
+                 console.log(t3);
                     if ((t3-t1<2000)){
-                    debugger;
                     expulsarContenido();
                     }
+                t2=t3;
+                t1=t2;
+           })
+        })
+    })*/
+    window.onclick=function (e){
+        var t1=e.timeStamp;
+        console.log(t1);
+        window.onclick=function (e2){
+            var t2=e2.timeStamp;
+            console.log(t2);
+            window.onclick=function (e3){
+                
+                var t3=e3.timeStamp;
+                 console.log(t1);
+                 console.log(t2);
+                 console.log(t3);
+                    if ((t3-t1<2000)){
+                    expulsarContenido();
+                    }
+                t1=t2;
+                t2=t3;
             }
         }
     }
@@ -131,9 +197,6 @@ p{
     }
     function anularEnlaces(e){
          e.preventDefault();
-        if (e.isDefaultPrevented){
-            console.log("si");
-        }
     }
     function inicializar(){
     nParrafo = document.getElementById("parrafo").value;
