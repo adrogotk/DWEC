@@ -91,7 +91,7 @@ Public Class Frm2
         mostrarFrm4()
     End Sub
 
-    'Al pulsar en el boton "Aceptar", llama al procedimiento comprobarCampos, para comprobar que no hay campos vacios
+    'Al pulsar en el boton "Aceptar", llama a la funcion comprobarCampos, para comprobar que no hay campos vacios
     'y luego, si supera la verificación llama al procedimiento accionAceptar, para según el modo en el que estemos hacer una acción u otra.
     'Por ultimo llama al procedimiento borrarForm, para limpiar el formulario y al procedimiento deshabilitarFormulario,
     'para que en caso de que no estemos en el modo "Agregar" vuelvan a estar los campos distintos al ID deshabilitados
@@ -250,7 +250,7 @@ Public Class Frm5
         mostrarFrm4()
     End Sub
 
-    'Al pulsar en el boton "Aceptar", llama al procedimiento comprobarCampos, para comprobar que no hay campos vacios
+    'Al pulsar en el boton "Aceptar", llama a la funcion comprobarCampos, para comprobar que no hay campos vacios
     'y luego, si supera la verificación llama al procedimiento accionAceptar, para según el modo en el que estemos hacer una acción u otra.
     'Por ultimo llama al procedimiento borrarForm, para limpiar el formulario y al procedimiento deshabilitarFormulario,
     'para que en caso de que no estemos en el modo "Agregar" vuelvan a estar los campos distintos al ID deshabilitados
@@ -359,7 +359,7 @@ Public Class Frm6
         mostrarFrm4()
     End Sub
 
-    'Al pulsar en el boton "Aceptar", llama al procedimiento comprobarCampos, para comprobar que no hay campos vacios
+    'Al pulsar en el boton "Aceptar", llama a la funcion comprobarCampos, para comprobar que no hay campos vacios
     'y luego, si supera la verificación llama al procedimiento accionAceptar, para según el modo en el que estemos hacer una acción u otra.
     'Por ultimo llama al procedimiento borrarForm, para limpiar el formulario y al procedimiento deshabilitarFormulario,
     'para que en caso de que no estemos en el modo "Alquilar" vuelvan a estar los campos distintos al ID deshabilitados
@@ -424,6 +424,8 @@ Imports System.Runtime.CompilerServices
 Module ModuleProcedimientos
     Const APP_NAME = "Videoclub"
     Dim modo As String
+
+    'Desactiva el cronometro del formulario 1, muestra el formulario principal (el 2) sin modo y oculta el resto
     Public Sub mostrarFrm2()
         Frm1.Timer1.Enabled = False
         Frm1.Hide()
@@ -431,6 +433,9 @@ Module ModuleProcedimientos
         Frm4.Hide()
         Frm2.Show()
     End Sub
+
+    'Muestra el formulario de Listado (el 3), oculta el resto, establece el modo segun la opción de menu seleccionada,
+    'habilita el filtro si es necesario y presenta el listado con los nombres de las columnas que correspondan según el listado seleccionado
     Public Sub mostrarFrm3(sender As Object)
         Frm2.Hide()
         Frm5.Hide()
@@ -450,26 +455,37 @@ Module ModuleProcedimientos
         Frm3.Show()
         presentarListado()
     End Sub
+
+    'Muestra el formulario de Acerca De (el 4) y establece el modo correspondiente
     Public Sub mostrarFrm4()
         Frm2.Hide()
         Frm4.Show()
         setModo(Frm4, "Acerca de")
     End Sub
+
+    'Oculta el resto de formularios y llama al procedimiento presentarFormulario, para mostrar el formulario de peliculas (el 2) en el modo correspondiente
     Public Sub mostrarFrm2(sender As Object)
         ocultarFrm()
-        presentarFormulario(Frm2, sender)
         Frm2.Show()
+        presentarFormulario(Frm2, sender)
     End Sub
+
+    'Oculta el resto de formularios y llama al procedimiento presentarFormulario, para mostrar el formulario de socios (el 5) en el modo correspondiente
     Public Sub mostrarFrm5(sender As Object)
         ocultarFrm()
         Frm5.Show()
         presentarFormulario(Frm5, sender)
     End Sub
+
+    'Oculta el resto de formularios y llama al procedimiento presentarFormulario, para mostrar el formulario de prestamos (el 6) en el modo correspondiente
     Public Sub mostrarFrm6(sender As Object)
         ocultarFrm()
         Frm6.Show()
         presentarFormulario(Frm6, sender)
     End Sub
+
+    'Oculta todos los formularios para asegurarse que no estan 2 abiertos. El formulario inicial, debido a que solo se accede al inicio y no entra en el flujo,
+    'no es necesario ocultarlo siempre, ya que con ocultarlo cuando pasamos del formulario inicial al menú principal, bastaria.
     Public Sub ocultarFrm()
         Frm2.Hide()
         Frm3.Hide()
@@ -477,9 +493,14 @@ Module ModuleProcedimientos
         Frm5.Hide()
         Frm6.Hide()
     End Sub
+
+    'Cierra la aplicación, no vale con el metodo close del formulario, ya que el resto seguirian ocultos pero activos.
     Public Sub cerrarFrm()
         Application.Exit()
     End Sub
+
+    'Procedimiento asociado al modo de "Agregar". Deshabilita el campo de Id, y por tanto la lupa, ya que a futuro el ID se generaria automáticamente
+    'mediante un autoincremento; y habilita el resto de campos de texto del formulario en cuestion, más los botones "Aceptar" y "Cancelar" de este
     Public Sub habilitarFormulario(form As Form)
         Select Case form.Name
             Case "Frm2"
@@ -516,6 +537,12 @@ Module ModuleProcedimientos
         End Select
         MsgBox("Formulario habilitado")
     End Sub
+
+    'Procedimiento asociado a los modos de "Modificar", "Eliminar" y "Consultar. Habilita el campo Id, para que podamos escoger que elemento queremos 
+    'consultar, eliminar o modificar; y deshabilita el resto de campos de texto del formulario en cuestion, más los botones "Aceptar" y "Cancelar" en caso
+    'de que queramos consultar, ya que al no hacer ninguna modificación en ese modo, no tiene sentido que este habilitado. Para el resto de casos
+    'se habilitan directamente aqui y no al clicar la lupa, ya que puedes realizar operaciones con ellos sin haber clicado la lupa (como borrar lo que has escrito
+    'en el campo ID, o borrar un elemento concreto más rapidamente, sin necesidad de visualizar sus campos)
     Public Sub deshabilitarFormulario(form As Form)
         Select Case form.Name
             Case "Frm2"
@@ -565,6 +592,8 @@ Module ModuleProcedimientos
         End Select
         MsgBox("Formulario Deshabilitado")
     End Sub
+
+    'Habilita el boton de la lupa, lo cual, cuando no estemos escribiendo, ni haya nada escrito, tiene sentido ya que no daría resultado la busqueda
     Public Sub habilitarLupa(form As Form)
         Select Case form.Name
             Case "Frm2"
@@ -575,6 +604,8 @@ Module ModuleProcedimientos
                 Frm6.btn_lupa.Enabled = True
         End Select
     End Sub
+
+    'Deshabilita el boton de la lupa, lo cual, cuando cambiemos al modo "Agregar", tiene sentido ya que no tiene sentido buscar algo que aun no hemos agregado
     Private Sub deshabilitarLupa(form As Form)
         Select Case form.Name
             Case "Frm2"
@@ -585,11 +616,15 @@ Module ModuleProcedimientos
                 Frm6.btn_lupa.Enabled = False
         End Select
     End Sub
+
+    'Establece el modo/lugar en el que estamos en cada momento en la aplicacion y modifica el titulo del formulario, para que este modo pueda ser visualizado
+    'para que el usuario sepa donde se encuentra
     Public Sub setModo(form As Form, modo_string As String)
         modo = modo_string
         form.Text = APP_NAME + " -> " + modo
     End Sub
 
+    'Limpia, dejandolos vacios, todos los campos del respectivo formulario
     Public Sub borrarForm(form As Form)
         Select Case form.Name
             Case "Frm2"
@@ -618,6 +653,9 @@ Module ModuleProcedimientos
         End Select
     End Sub
 
+    'Establece, según el modo, en que método del módulo de ficheros tenemos que procesar los datos del respectivo formulario,
+    'o, en caso de que el modo sea el de eliminar pelicula, socio o prestamo, llama al procedimiento confirmarBorrado para lanzar
+    'el mensaje de confirmación de borrado
     Public Sub accionAceptar(form As Form)
         Select Case modo
             Case "Agregar Pelicula"
@@ -643,6 +681,9 @@ Module ModuleProcedimientos
         End Select
     End Sub
 
+    'Establece los nombres de las columnas según el tipo de listado que sea y, en caso, que sea un listado sin filtros,
+    'llama al procedimiento de listar todos respectivo (listarPeliculas, listarSocios o listarPrestamos), para a futuro
+    'mostrar todos los registros del tipo respectivo en el listView
     Public Sub presentarListado()
         If (modo.IndexOf("Pelicula") <> -1) Then
             Frm3.listado.Columns(0).Text = "ID"
@@ -652,6 +693,9 @@ Module ModuleProcedimientos
             Frm3.listado.Columns(4).Text = "Director"
             Frm3.listado.Columns(5).Text = "Actores"
             Frm3.listado.Columns(6).Text = "Descripcion"
+            If (modo = "Listado Peliculas") Then
+                listarPeliculas()
+            End If
         End If
         If (modo.IndexOf("Socio") <> -1) Then
             Frm3.listado.Columns(0).Text = "ID"
@@ -662,6 +706,9 @@ Module ModuleProcedimientos
             Frm3.listado.Columns(5).Text = "Apellidos"
             Frm3.listado.Columns(6).Text = "Direccion"
             Frm3.listado.Columns(7).Text = "Telefono"
+            If (modo = "Listado Socios") Then
+                listarSocios()
+            End If
         End If
         If (modo.IndexOf("Prestamo") <> -1) Then
             Frm3.listado.Columns(0).Text = "ID"
@@ -669,9 +716,13 @@ Module ModuleProcedimientos
             Frm3.listado.Columns(2).Text = "Pelicula"
             Frm3.listado.Columns(3).Text = "Fecha inicio"
             Frm3.listado.Columns(4).Text = "Fecha vencimiento"
+            If (modo = "Listado Prestamos") Then
+                listarPrestamos()
+            End If
         End If
     End Sub
 
+    'Presenta el formulario en el modo correspondiente segun la opcion escogida del menú
     Private Sub presentarFormulario(form As Form, sender As Object)
         Dim opcionClickada As ToolStripMenuItem = sender
         setModo(form, opcionClickada.Tag)
@@ -682,6 +733,10 @@ Module ModuleProcedimientos
                 deshabilitarFormulario(form)
         End Select
     End Sub
+
+    'Lanza un mensaje de confirmación del borrado. Mediante el MsgBoxStyle.YesNo, añadimos al mensaje las opciones de "Si" o "No"
+    'y posteriormente, si el resultado (lo que se almacena en la variable "mensaje") es afirmativo (MsgBoxResult.Yes), se llama
+    'al procedimiento de eliminar respectivo según el formulario en el que estemos
     Private Sub confirmarBorrado(form As Form)
         Dim mensaje = MsgBox("esta seguro de eliminar los datos? ", MsgBoxStyle.YesNo)
         If (mensaje = MsgBoxResult.Yes) Then
@@ -695,9 +750,15 @@ Module ModuleProcedimientos
             End Select
         End If
     End Sub
+
+    'Permite obtener el modo fuera del modulo de procedimientos
     Public Function getModo() As String
         Return modo
     End Function
+
+    'Comprueba, tanto que los campos requeridos estan rellenos, como que, en el caso de los socios, el email contenga un @ o el telefono
+    'no tenga letras. En caso de que alguna condicion no se cumpla, muestra un mensaje e impide que continue el procesamiento al retornar la función, false.
+    'Si cumple todas las condiciones, la funcion retornara True y podra continuar el procesamiento
     Public Function comprobarCampos(form As Form) As Boolean
         Dim campos_correctos = True
         Select Case form.Name
@@ -741,35 +802,58 @@ End Module
 
 ```
 Module ModuleFicheros
+
+    'Llama al procedimiento añadirGenero, para que a futuro, en caso de que el genero introducido no exista en la Base de datos
+    'lo agregue. A futuro, este procedimiento se encargará de realizar el insert de películas en la base de datos
     Public Sub guardarPelicula()
         añadirGenero(Frm2.genero.Text)
         MsgBox("Se ha guardado la pelicula")
     End Sub
+
+    'Llama al procedimiento añadirPoblacion, para que a futuro, en caso de que la poblacion introducido no exista en la Base de datos
+    'la agregue. A futuro, este procedimiento se encargará de realizar el insert de socios en la base de datos
     Public Sub guardarSocio()
         añadirPoblacion(Frm5.poblacion.Text)
         MsgBox("Se ha guardado el socio")
     End Sub
+
+    'A futuro, este procedimiento se encargará de realizar el insert de prestamos en la base de datos
     Public Sub guardarPrestamo()
         MsgBox("Se ha guardado el prestamo")
     End Sub
+
+    'A futuro, este procedimiento se encargará de realizar el update de peliculas en la base de datos
     Public Sub modificarPelicula()
         MsgBox("Se ha modificado la pelicula")
     End Sub
+
+    'A futuro, este procedimiento se encargará de realizar el update de socios en la base de datos
     Public Sub modificarSocio()
         MsgBox("Se ha modificado el socio")
     End Sub
+
+    'A futuro, este procedimiento se encargará de realizar el update de prestamos en la base de datos
     Public Sub modificarPrestamo()
         MsgBox("Se ha modificado el prestamo")
     End Sub
+
+    'A futuro, este procedimiento se encargará de realizar el delete de peliculas en la base de datos
     Public Sub eliminarPelicula()
         MsgBox("Se ha eliminado la pelicula")
     End Sub
+
+    'A futuro, este procedimiento se encargará de realizar el delete de socios en la base de datos
     Public Sub eliminarSocio()
         MsgBox("Se ha eliminado el socio")
     End Sub
+
+    'A futuro, este procedimiento se encargará de realizar el delete de prestamos en la base de datos
     Public Sub eliminarPrestamo()
         MsgBox("Se ha eliminado el prestamo")
     End Sub
+
+    'A futuro, este procedimiento se encargara de buscar en la base de datos la pelicula que tiene el ID indicado,
+    'si el ID es valido, que para este caso, basta con que sea numerico
     Public Sub consultarPelicula(id As String)
         Dim idCorrecto As Boolean = True
         Try
@@ -782,6 +866,9 @@ Module ModuleFicheros
             MsgBox("Datos pelicula")
         End If
     End Sub
+
+    'A futuro, este procedimiento se encargara de buscar en la base de datos el socio que tiene el ID indicado,
+    'si el ID es valido, que para este caso, basta con que sea numerico
     Public Sub consultarSocio(id As String)
         Dim idCorrecto As Boolean = True
         Try
@@ -794,6 +881,9 @@ Module ModuleFicheros
             MsgBox("Datos socio")
         End If
     End Sub
+
+    'A futuro, este procedimiento se encargara de buscar en la base de datos el prestamo que tiene el ID indicado,
+    'si el ID es valido, que para este caso, basta con que sea numerico
     Public Sub consultarPrestamo(id As String)
         Dim idCorrecto As Boolean = True
         Try
@@ -806,15 +896,23 @@ Module ModuleFicheros
             MsgBox("Datos prestamo")
         End If
     End Sub
+
+    'A futuro, este procedimiento se encargará de obtener todas las peliculas de la base de datos
     Public Sub listarPeliculas()
         MsgBox("listado peliculas")
     End Sub
+
+    'A futuro, este procedimiento se encargará de obtener todos los socios de la base de datos
     Public Sub listarSocios()
         MsgBox("listado socios")
     End Sub
+
+    'A futuro, este procedimiento se encargará de obtener todos los prestamos de la base de datos
     Public Sub listarPrestamos()
         MsgBox("listado prestamos")
     End Sub
+
+    'A futuro, este procedimiento se encargará de realizar las consultas correspondientes en la base de datos segun el filtro que estemos usando
     Public Sub filtrar()
         Dim modo = getModo()
         Select Case modo
@@ -836,13 +934,38 @@ Module ModuleFicheros
                 MsgBox("Filtrando por pelicula prestamo")
         End Select
     End Sub
+
+    'A futuro, este procedimiento se encargará de realizar el insert de generos en la base de datos, en caso de que no existan ya
     Private Sub añadirGenero(genero As String)
         MsgBox("Genero añadido")
     End Sub
+
+    'A futuro, este procedimiento se encargará de realizar el insert de poblaciones en la base de datos, en caso de que no existan ya
     Private Sub añadirPoblacion(poblacion As String)
         MsgBox("Poblacion Añadida")
     End Sub
+
 End Module
 
 ```
+## Usabilidad
+
+En la realización de este prototipo, se han tenido en cuenta, las 10 reglas más importantes de la usabilidad, de la siguiente manera:
+
+1.Visibilidad del estado del sistema: Mediante la gestion del modo y su inclusion en el titulo del formulario, el usuario sabe en todo momento donde está
+2.Utilizar el lenguaje de los usuarios: Para los textos visibles, se han seleccionado palabras entendibles y comunes entre los usuarios, como "Alquilar prestamo" o "Devolver prestamo" en vez de "Agregar Prestamo"
+o "Eliminar Prestamo"
+3.Control y libertad para el usuario: Todos los formularios disponen de la opción "Cancelar" que limpia el formulario. Además, en caso de que vayan a eliminar algo que no quieran suprimir, pueden cancelar el borrado
+seleccionando "No" en el mensaje de confirmación
+4.Consistencia y estándares: Cada acción principal se asocia con una opción del menú concreta, para que no haya multiples acciones en un mismo modo. También se usan los mismos términos para cada apartado
+a lo largo de la parte visual de toda la aplicación
+5.Prevención de errores: Se han agregado comprobaciones que evitan errores de casting, formato o, a futuro, campos requeridos vacios, sustituyendo esos errores por mensajes de error
+6.Minimizar la carga de la memoria del usuario: A futuro, cuando haya datos cargados, tanto en eliminar, como en modificar, simplemente con introducir el ID y pulsar la lupa se rellenarán el resto de campos, 
+sin que tengas que memorizarlos
+7.Flexibilidad y eficiencia de uso: En el menú del formulario principal y en los formularios de operaciones, se encuentran todas las acciones que puedes realizar en la aplicación. En los lugares donde ese menú no existe,
+está presente un boton para volver al formulario principal.
+8.Los diálogos estéticos y diseño minimalista: El uso de diálogos esta reducido a mensajes emergentes que aparecen cuando ocurre la acción correspondiente, y estos no ocupan más de 1 linea
+9.Ayudar a los usuarios a reconocer, diagnosticar y recuperarse de los errores: Los mensajes de error, indican en lenguaje sencillo, cual ha sido la equivocación cometida por el usuario, para que lo pueda remediar
+10.Ayuda y documentación: El prototipo se ha realizado de manera que la aplicación sea sencilla de manejar, ya que el flujo con socios, peliculas y prestamos es idéntico, al igual que el procedimiento de los 
+distintos listados. Esto hace que no sea necesario un manual de ayuda para el usuario.
 
