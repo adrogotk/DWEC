@@ -8,17 +8,23 @@
 Imports System.ComponentModel
 
 Public Class Frm1
+
+    'Al pulsar el boton "iniciar" llama al procedimiento mostrarFrm2, para mostrar el formulario principal (el 2)
     Private Sub BtnIniciar_Click(sender As Object, e As EventArgs) Handles BtnIniciar.Click
         mostrarFrm2()
     End Sub
 
+    'Al cargar el formulario llama al procedimiento ocultarFrm para que el resto de formularios se mantengan ocultos
     Private Sub Frm1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ocultarFrm()
     End Sub
+
+   'Al cerrar el formulario llama al procedimiento cerrarFrm para que se cierren todos los formularios
     Private Sub Frm1_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
         cerrarFrm()
     End Sub
 
+   'Al hacer tick el cronometro a los 20s, llama al procedimiento mostrarFrm2, para mostrar el formulario principal (el 2) aunque no hayamos pulsado "iniciar"
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
         mostrarFrm2()
     End Sub
@@ -38,52 +44,75 @@ Imports System.ComponentModel
 Imports System.Reflection.Metadata
 
 Public Class Frm2
+
+    'Al pulsar en la opción de menú "Peliculas->Agregar", llama al procedimiento setModo para definir en que parte estamos del programa,
+    'y al procedimiento habilitarFormulario para que podamos escribir sobre los campos de texto distintos al ID
     Private Sub AgregarPelicula_Click(sender As Object, e As EventArgs) Handles AgregarPelicula.Click
         setModo(Me, AgregarPelicula.Tag)
         habilitarFormulario(Me)
     End Sub
 
+    'Al pulsar en la opción de menú "Peliculas->Modificar", llama al procedimiento setModo para definir en que parte estamos del programa,
+    'y al procedimiento deshabilitarFormulario para que inicialmente no podamos escribir sobre los campos de texto distintos al ID
     Private Sub ModificarPelicula_Click(sender As Object, e As EventArgs) Handles ModificarPelicula.Click
         setModo(Me, ModificarPelicula.Tag)
         deshabilitarFormulario(Me)
     End Sub
 
+    'Al pulsar en la opción de menú "Peliculas->Eliminar", llama al procedimiento setModo para definir en que parte estamos del programa,
+    'y al procedimiento deshabilitarFormulario para que inicialmente no podamos escribir sobre los campos de texto distintos al ID
     Private Sub EliminarPelicula_Click(sender As Object, e As EventArgs) Handles EliminarPelicula.Click
         setModo(Me, EliminarPelicula.Tag)
         deshabilitarFormulario(Me)
     End Sub
 
+    'Al pulsar en la opción de menú "Peliculas->Consultar", llama al procedimiento setModo para definir en que parte estamos del programa,
+    'y al procedimiento deshabilitarFormulario para que inicialmente no podamos escribir sobre los campos de texto distintos al ID
     Private Sub ConsultarPelicula_Click(sender As Object, e As EventArgs) Handles ConsultarPelicula.Click
         setModo(Me, ConsultarPelicula.Tag)
         deshabilitarFormulario(Me)
     End Sub
 
+    'Al pulsar sobre alguna de las opciones del elemento de menu "Listado", llama al procedimiento mostrarFrm3, para mostrar el formulario de listados (el 3)
+    'con las características correspondientes segun la opcion clickada
     Private Sub PeliculasTodos_Click(sender As Object, e As EventArgs) Handles PeliculasTodos.Click, PeliculasCategorias.DropDownItemClicked,
                                                                        SociosTodos.Click, SociosCategorias.DropDownItemClicked,
                                                                        PrestamoTodos.Click, PrestamoCategorias.DropDownItemClicked
         mostrarFrm3(sender)
     End Sub
 
+    'Al pulsar en el boton salir, llama al procedimiento cerrarFrm, para cerrar todos los formularios
     Private Sub Salir_Click(sender As Object, e As EventArgs) Handles Salir.Click
         cerrarFrm()
     End Sub
 
+    'Al pulsar en la opción de menú "Acerca De", llama al procedimiento mostrarFrm4, para abrir el formulario de Acerca De (el 4)
     Private Sub AcercaDe_Click(sender As Object, e As EventArgs) Handles AcercaDe.Click
         mostrarFrm4()
     End Sub
 
+    'Al pulsar en el boton "Aceptar", llama al procedimiento comprobarCampos, para comprobar que no hay campos vacios
+    'y luego, si supera la verificación llama al procedimiento accionAceptar, para según el modo en el que estemos hacer una acción u otra.
+    'Por ultimo llama al procedimiento borrarForm, para limpiar el formulario y al procedimiento deshabilitarFormulario,
+    'para que en caso de que no estemos en el modo "Agregar" vuelvan a estar los campos distintos al ID deshabilitados
     Private Sub BtnAceptar_Click(sender As Object, e As EventArgs) Handles BtnAceptar.Click
         Dim campos_correctos = comprobarCampos(Me)
         If (campos_correctos = True) Then
             accionAceptar(Me)
         End If
         borrarForm(Me)
+        If (getModo() <> "Agregar Pelicula") Then
+            deshabilitarFormulario(Me)
+        End If
     End Sub
 
+    'Al pulsar en el boton "Cancelar", llama al procedimiento borrarForm, para limpiar el formulario
     Private Sub BtnCancelar_Click(sender As Object, e As EventArgs) Handles BtnCancelar.Click
         borrarForm(Me)
     End Sub
 
+    'Al pulsar sobre la lupa, llama al procedimiento consultarPelicula, para obtener el resto de datos de la pelicula asociada al ID Introducido.
+    'En caso de que estemos en el modo modificar, habilitamos los campos de texto llamando al procedimiento habilitarFormulario, para poder realizar cambios
     Private Sub btn_lupa_Click(sender As Object, e As EventArgs) Handles btn_lupa.Click
         ModuleFicheros.consultarPelicula(Me.IdPelicula.Text.ToString())
         If (getModo() = "Modificar Pelicula") Then
@@ -91,22 +120,30 @@ Public Class Frm2
         End If
     End Sub
 
+    'Al cambiar el texto del Id, llama al procedimiento habilitarLupa para habilitar la lupa
     Private Sub IdPelicula_TextChanged(sender As Object, e As EventArgs) Handles IdPelicula.TextChanged
         habilitarLupa(Me)
     End Sub
 
+    'Al pulsar sobre una de las opciones del elemento de menu "Socios" llama al procedimiento mostrarFrm5 para mostrar el formulario de socios (el 5)
+    'con las características correspondientes segun la opcion clickada
     Private Sub AgregarSocio_Click(sender As Object, e As EventArgs) Handles AgregarSocio.Click, ModificarSocio.Click,
                                                                        EliminarSocio.Click, ConsultarSocio.Click
         mostrarFrm5(sender)
     End Sub
+
+    'Al pulsar sobre una de las opciones del elemento de menu "Prestamos" llama al procedimiento mostrarFrm5 para mostrar el formulario de prestamos (el 6)
+    'con las características correspondientes segun la opcion clickada
     Private Sub AgregarPrestamo_Click(sender As Object, e As EventArgs) Handles AgregarPrestamo.Click, ModificarPrestamo.Click,
                                                                    EliminarPrestamo.Click, ConsultarPrestamo.Click
         mostrarFrm6(sender)
     End Sub
 
+    'Al cerrar el formulario llama al procedimiento cerrarFrm para que se cierren todos los formularios
     Private Sub Frm2_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
         cerrarFrm()
     End Sub
+
 End Class
 ```
 ## Form 3
@@ -115,18 +152,26 @@ End Class
 ![Videoclub 3 2](https://github.com/user-attachments/assets/fe46daac-a6e0-4a24-8f0e-6f59603f9e14)
 ![Videoclub 3 3](https://github.com/user-attachments/assets/c347b30f-8c9f-4864-a9da-3be22c2673a6)
 ![Videoclub 3 4](https://github.com/user-attachments/assets/f1c695d3-4ddd-41fc-9acd-fe3d384c99b3)
+El listado de peliculas mediante filtro tanto de calificacion, titulo, actor o director; de socios mediante filtro de nombre y de prestamos mediante filtro tanto de socio, como de pelicula, funcionan igual
+que el listado de peliculas mediante filtro de género mostrado en la 5º imagen
 
 ```
 Imports System.ComponentModel
 
 Public Class Frm3
+
+    'Al cerrar el formulario llama al procedimiento cerrarFrm para que se cierren todos los formularios
     Private Sub Frm3_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
         cerrarFrm()
     End Sub
 
+    'Al pulsar en el boton "Volver a Inicio", llama al procedimiento mostrarFrm2 para que se muestre el formulario principal (el 2)
     Private Sub btn_volver_Click(sender As Object, e As EventArgs) Handles btn_volver.Click
         mostrarFrm2()
     End Sub
+
+    'Al introducir caracteres sobre el texto de filtro, se llama al procedimiento filtrar, para que se realice un filtro de los resultados
+    'mostrados en el listView siguiendo el criterio que hemos introducido
     Private Sub filtro_TextChanged(sender As Object, e As EventArgs) Handles filtro.TextChanged
         filtrar()
     End Sub
@@ -139,13 +184,13 @@ End Class
 Imports System.ComponentModel
 
 Public Class Frm4
-    Private Sub Label1_Click(sender As Object, e As EventArgs) Handles lblCreadoPor.Click
 
-    End Sub
+    'Al cerrar el formulario llama al procedimiento cerrarFrm para que se cierren todos los formularios
     Private Sub Frm4_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
         cerrarFrm()
     End Sub
 
+    'Al pulsar en el boton "Volver a Inicio", llama al procedimiento mostrarFrm2 para que se muestre el formulario principal (el 2)
     Private Sub btn_volver_Click(sender As Object, e As EventArgs) Handles btn_volver.Click
         mostrarFrm2()
     End Sub
@@ -153,73 +198,110 @@ End Class
 ```
 ## Form 5
 ![Videoclub 5](https://github.com/user-attachments/assets/b0516736-dd3c-47ca-9744-50f9e0348ee3)
-
+El formulario en los modos de modificar, eliminar y consultar socio, se visualizaría de la misma forma que para las películas
 ```
 Imports System.ComponentModel
 
 Public Class Frm5
+
+    'Al pulsar en la opción de menú "Socios->Agregar", llama al procedimiento setModo para definir en que parte estamos del programa,
+    'y al procedimiento habilitarFormulario para que podamos escribir sobre los campos de texto distintos al ID
     Private Sub AgregarSocio_Click(sender As Object, e As EventArgs) Handles AgregarSocio.Click
         setModo(Me, AgregarSocio.Tag)
         habilitarFormulario(Me)
     End Sub
 
+    'Al pulsar en la opción de menú "Socios->Modificar", llama al procedimiento setModo para definir en que parte estamos del programa,
+    'y al procedimiento deshabilitarFormulario para que inicialmente no podamos escribir sobre los campos de texto distintos al ID
     Private Sub ModificarSocio_Click(sender As Object, e As EventArgs) Handles ModificarSocio.Click
         setModo(Me, ModificarSocio.Tag)
         deshabilitarFormulario(Me)
     End Sub
 
+    'Al pulsar en la opción de menú "Socios->Eliminar", llama al procedimiento setModo para definir en que parte estamos del programa,
+    'y al procedimiento deshabilitarFormulario para que inicialmente no podamos escribir sobre los campos de texto distintos al ID
     Private Sub EliminarSocio_Click(sender As Object, e As EventArgs) Handles EliminarSocio.Click
         setModo(Me, EliminarSocio.Tag)
         deshabilitarFormulario(Me)
     End Sub
 
+    'Al pulsar en la opción de menú "Socios->Consultar", llama al procedimiento setModo para definir en que parte estamos del programa,
+    'y al procedimiento deshabilitarFormulario para que inicialmente no podamos escribir sobre los campos de texto distintos al ID
     Private Sub ConsultarSocio_Click(sender As Object, e As EventArgs) Handles ConsultarSocio.Click
         setModo(Me, ConsultarSocio.Tag)
         deshabilitarFormulario(Me)
     End Sub
+
+    'Al pulsar sobre alguna de las opciones del elemento de menu "Listado", llama al procedimiento mostrarFrm3, para mostrar el formulario de listados (el 3)
+    'con las características correspondientes segun la opcion clickada
     Private Sub PeliculasTodos_Click(sender As Object, e As EventArgs) Handles PeliculasTodos.Click, PeliculasCategorias.DropDownItemClicked,
                                                                        SociosTodos.Click, SociosCategorias.DropDownItemClicked,
                                                                        PrestamoTodos.Click, PrestamoCategorias.DropDownItemClicked
         mostrarFrm3(sender)
     End Sub
+
+    'Al pulsar en el boton salir, llama al procedimiento cerrarFrm, para cerrar todos los formularios
     Private Sub Salir_Click(sender As Object, e As EventArgs) Handles Salir.Click
         cerrarFrm()
     End Sub
 
+    'Al pulsar en la opción de menú "Acerca De", llama al procedimiento mostrarFrm4, para abrir el formulario de Acerca De (el 4)
     Private Sub AcercaDe_Click(sender As Object, e As EventArgs) Handles AcercaDe.Click
         mostrarFrm4()
     End Sub
+
+    'Al pulsar en el boton "Aceptar", llama al procedimiento comprobarCampos, para comprobar que no hay campos vacios
+    'y luego, si supera la verificación llama al procedimiento accionAceptar, para según el modo en el que estemos hacer una acción u otra.
+    'Por ultimo llama al procedimiento borrarForm, para limpiar el formulario y al procedimiento deshabilitarFormulario,
+    'para que en caso de que no estemos en el modo "Agregar" vuelvan a estar los campos distintos al ID deshabilitados
     Private Sub BtnAceptar_Click(sender As Object, e As EventArgs) Handles BtnAceptar.Click
         Dim campos_correctos = comprobarCampos(Me)
         If (campos_correctos = True) Then
             accionAceptar(Me)
         End If
         borrarForm(Me)
+        If (getModo() <> "Agregar Socio") Then
+            deshabilitarFormulario(Me)
+        End If
     End Sub
+
+   'Al pulsar en el boton "Cancelar", llama al procedimiento borrarForm, para limpiar el formulario
     Private Sub BtnCancelar_Click(sender As Object, e As EventArgs) Handles BtnCancelar.Click
         borrarForm(Me)
     End Sub
+
+    'Al pulsar sobre la lupa, llama al procedimiento consultarSocio, para obtener el resto de datos del socio asociado al ID Introducido.
+    'En caso de que estemos en el modo modificar, habilitamos los campos de texto llamando al procedimiento habilitarFormulario, para poder realizar cambios
     Private Sub btn_lupa_Click(sender As Object, e As EventArgs) Handles btn_lupa.Click
         ModuleFicheros.consultarSocio(Me.IdSocio.Text.ToString())
         If (getModo() = "Modificar Socio") Then
             habilitarFormulario(Me)
         End If
     End Sub
+
+    'Al cambiar el texto del Id, llama al procedimiento habilitarLupa para habilitar la lupa
     Private Sub IdSocio_TextChanged(sender As Object, e As EventArgs) Handles IdSocio.TextChanged
         habilitarLupa(Me)
     End Sub
+
+    'Al pulsar sobre una de las opciones del elemento de menu "Peliculas" llama al procedimiento mostrarFrm2 para mostrar el formulario de peliculas (el 2)
+    'con las características correspondientes segun la opcion clickada
     Private Sub AgregarPelicula_Click(sender As Object, e As EventArgs) Handles AgregarPelicula.Click, ModificarPelicula.Click,
                                                                        EliminarPelicula.Click, ConsultarPelicula.Click
         mostrarFrm2(sender)
     End Sub
+
+    'Al pulsar sobre una de las opciones del elemento de menu "Prestamos" llama al procedimiento mostrarFrm5 para mostrar el formulario de prestamos (el 6)
+    'con las características correspondientes segun la opcion clickada
     Private Sub AgregarPrestamo_Click(sender As Object, e As EventArgs) Handles AgregarPrestamo.Click, ModificarPrestamo.Click,
                                                                EliminarPrestamo.Click, ConsultarPrestamo.Click
         mostrarFrm6(sender)
     End Sub
+
+    'Al cerrar el formulario llama al procedimiento cerrarFrm para que se cierren todos los formularios
     Private Sub Frm5_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
         cerrarFrm()
     End Sub
-
 
 End Class
 ```
@@ -230,70 +312,109 @@ End Class
 Imports System.ComponentModel
 
 Public Class Frm6
+
+    'Al pulsar en la opción de menú "Prestamos->Alquilar", llama al procedimiento setModo para definir en que parte estamos del programa,
+    'y al procedimiento habilitarFormulario para que podamos escribir sobre los campos de texto distintos al ID
     Private Sub AgregarPrestamo_Click(sender As Object, e As EventArgs) Handles AgregarPrestamo.Click
         setModo(Me, AgregarPrestamo.Tag)
         habilitarFormulario(Me)
     End Sub
 
+    'Al pulsar en la opción de menú "Prestamos->Modificar", llama al procedimiento setModo para definir en que parte estamos del programa,
+    'y al procedimiento deshabilitarFormulario para que inicialmente no podamos escribir sobre los campos de texto distintos al ID
     Private Sub ModificarPrestamo_Click(sender As Object, e As EventArgs) Handles ModificarPrestamo.Click
         setModo(Me, ModificarPrestamo.Tag)
         deshabilitarFormulario(Me)
     End Sub
 
+    'Al pulsar en la opción de menú "Prestamos->Devolver", llama al procedimiento setModo para definir en que parte estamos del programa,
+    'y al procedimiento deshabilitarFormulario para que inicialmente no podamos escribir sobre los campos de texto distintos al ID
     Private Sub EliminarPrestamo_Click(sender As Object, e As EventArgs) Handles EliminarPrestamo.Click
         setModo(Me, EliminarPrestamo.Tag)
         deshabilitarFormulario(Me)
     End Sub
 
+    'Al pulsar en la opción de menú "Prestamos->Consultar", llama al procedimiento setModo para definir en que parte estamos del programa,
+    'y al procedimiento deshabilitarFormulario para que inicialmente no podamos escribir sobre los campos de texto distintos al ID
     Private Sub ConsultarPrestamo_Click(sender As Object, e As EventArgs) Handles ConsultarPrestamo.Click
         setModo(Me, ConsultarPrestamo.Tag)
         deshabilitarFormulario(Me)
     End Sub
+
+    'Al pulsar sobre alguna de las opciones del elemento de menu "Listado", llama al procedimiento mostrarFrm3, para mostrar el formulario de listados (el 3)
+    'con las características correspondientes segun la opcion clickada
     Private Sub PeliculasTodos_Click(sender As Object, e As EventArgs) Handles PeliculasTodos.Click, PeliculasCategorias.DropDownItemClicked,
                                                                        SociosTodos.Click, SociosCategorias.DropDownItemClicked,
                                                                        PrestamoTodos.Click, PrestamoCategorias.DropDownItemClicked
         mostrarFrm3(sender)
     End Sub
+
+    'Al pulsar en el boton salir, llama al procedimiento cerrarFrm, para cerrar todos los formularios
     Private Sub Salir_Click(sender As Object, e As EventArgs) Handles Salir.Click
         cerrarFrm()
     End Sub
 
+    'Al pulsar en la opción de menú "Acerca De", llama al procedimiento mostrarFrm4, para abrir el formulario de Acerca De (el 4)
     Private Sub AcercaDe_Click(sender As Object, e As EventArgs) Handles AcercaDe.Click
         mostrarFrm4()
     End Sub
+
+    'Al pulsar en el boton "Aceptar", llama al procedimiento comprobarCampos, para comprobar que no hay campos vacios
+    'y luego, si supera la verificación llama al procedimiento accionAceptar, para según el modo en el que estemos hacer una acción u otra.
+    'Por ultimo llama al procedimiento borrarForm, para limpiar el formulario y al procedimiento deshabilitarFormulario,
+    'para que en caso de que no estemos en el modo "Alquilar" vuelvan a estar los campos distintos al ID deshabilitados
     Private Sub BtnAceptar_Click(sender As Object, e As EventArgs) Handles BtnAceptar.Click
         Dim campos_correctos = comprobarCampos(Me)
         If (campos_correctos = True) Then
             accionAceptar(Me)
         End If
         borrarForm(Me)
+        If (getModo() <> "Alquilar Prestamo") Then
+            deshabilitarFormulario(Me)
+        End If
     End Sub
+
+
+   'Al pulsar en el boton "Cancelar", llama al procedimiento borrarForm, para limpiar el formulario
     Private Sub BtnCancelar_Click(sender As Object, e As EventArgs) Handles BtnCancelar.Click
         borrarForm(Me)
     End Sub
+
+    'Al pulsar sobre la lupa, llama al procedimiento consultarPrestamo, para obtener el resto de datos del prestamo asociado al ID Introducido.
+    'En caso de que estemos en el modo modificar, habilitamos los campos de texto llamando al procedimiento habilitarFormulario, para poder realizar cambios
     Private Sub btn_lupa_Click(sender As Object, e As EventArgs) Handles btn_lupa.Click
         ModuleFicheros.consultarPrestamo(Me.IdPrestamo.Text.ToString())
         If (getModo() = "Modificar Prestamo") Then
             habilitarFormulario(Me)
         End If
     End Sub
+
+    'Al cambiar el texto del Id, llama al procedimiento habilitarLupa para habilitar la lupa
     Private Sub IdPelicula_TextChanged(sender As Object, e As EventArgs) Handles IdPrestamo.TextChanged
         habilitarLupa(Me)
     End Sub
+
+    'Al pulsar sobre una de las opciones del elemento de menu "Socios" llama al procedimiento mostrarFrm5 para mostrar el formulario de socios (el 5)
+    'con las características correspondientes segun la opcion clickada
     Private Sub AgregarSocio_Click(sender As Object, e As EventArgs) Handles AgregarSocio.Click, ModificarSocio.Click,
                                                                    EliminarSocio.Click, ConsultarSocio.Click
         mostrarFrm5(sender)
     End Sub
+
+    'Al pulsar sobre una de las opciones del elemento de menu "Peliculas" llama al procedimiento mostrarFrm2 para mostrar el formulario de peliculas (el 2)
+    'con las características correspondientes segun la opcion clickada
     Private Sub AgregarPelicula_Click(sender As Object, e As EventArgs) Handles AgregarPelicula.Click, ModificarPelicula.Click,
                                                                     EliminarPelicula.Click, ConsultarPelicula.Click
         mostrarFrm2(sender)
     End Sub
+
+    'Al cerrar el formulario llama al procedimiento cerrarFrm para que se cierren todos los formularios
     Private Sub Frm6_Closing(sender As Object, e As CancelEventArgs) Handles Me.Closing
         cerrarFrm()
     End Sub
 
 
-End Clas
+End Class
 ```
 ## Module Procedimientos
 
