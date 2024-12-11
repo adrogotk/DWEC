@@ -458,7 +458,7 @@ Module ModuleProcedimientos
 
     'Muestra el formulario de Acerca De (el 4) y establece el modo correspondiente
     Public Sub mostrarFrm4()
-        Frm2.Hide()
+        ocultarFrm()
         Frm4.Show()
         setModo(Frm4, "Acerca de")
     End Sub
