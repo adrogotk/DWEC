@@ -4,28 +4,62 @@
 
 ![Interfaces1](https://github.com/user-attachments/assets/5b411bb1-f035-4d0a-8b8a-d62468f00586)
 
+En este formulario se realiza la conexión a la BD. El Sistema Gestor de Bases de datos utilizado es SQLite. Además mediante un temporizador, podemos desplazarnos al formulario principal si el usuario no ha pulsado click
+
 
 ## Form 2
 
 ![Interfaces2](https://github.com/user-attachments/assets/80303aaa-2f84-410d-8b1c-dd32eee368eb)
 
+En este formulario se realiza la gestión de las películas. Se puede presentar de varios modos, Agregar, modificar, eliminar y consultar, segun la opción de menú seleccionada. 
+En caso de agregar tendremos habilitados los campos de texto, excepto el ID, que se genera automáticamente y cuando todos esten completos (Si no aparece un mensaje de error) pulsamos aceptar para agregar la película a la BD. Con cancelar en esta y en 
+el resto de opciones, limpiamos las cajas de texto
+En caso de modificar, inicialmente, tendremos habilitado solo el id. Cuando introduzcamos el identificador y pulsemos la lupa, si existe la película, se habilitarán el resto de elementos del formulario, que tendran como valores
+los datos originales de la película con el id seleccionado. Estos se pueden modificar y al pulsar aceptar, se actualizará la película en la BD.
+En caso de eliminar, el procedimiento sería el mismo que en modificar, solo que no tendremos habilitados el resto de campos distintos al id en ningún momento. Cuando pulsemos aceptar, nos aparece un mensaje de confirmación, en el cual
+si seleccionamos que si, se borra el registro, con el ID indicado de la BD
+En caso de consultar, el procedimiento sería el mismo que eliminar, solo que con las opciones de aceptar y cancelar deshabilitadas, ya que si se desea hacer una modificación o borrado de esos datos, hay que desplazarse a la opción de menú 
+correspondiente.
+
 
 ## Form 3
 
 ![Interfaces3](https://github.com/user-attachments/assets/7ef3f65b-8ef7-41d9-8baf-c759655a80eb)
+Este formulario contiene un listado originalmente vacio, en el cual, las columnas, según el modo seleccionado, contendran los datos que se van a mostrar. Las filas se rellenaran con los registros que haya de la tabla correspondiente en BD.
+Además desde el menú podemos acceder a distintos filtros en los cuales, aparece el mismo formulario pero con la caja de texto superior habilitada, para poder escribir texto y dejar en el listado solo los registros que en la columna correspondiente
+al fltro, contengan la cadena de texto introducida.
 
 
 ## Form 4
+![Interfaces6](https://github.com/user-attachments/assets/79d141cb-007c-457f-84ab-9f16f77d5dfb)
+Este formulario contiene los créditos de la aplicación y un boton, el cual, al pulsarlo, descarga en tu equipo un pdf con el manual de ayuda (o manual de usuario) de la aplicación
+
 
 ## Form 5
 
 ![Interfaces4](https://github.com/user-attachments/assets/e5ca3daa-2785-4d37-917d-bad86ab74d0f)
 
+En este formulario se realiza la gestión de los socios. Se puede presentar de varios modos, Agregar, modificar, eliminar y consultar, segun la opción de menú seleccionada. 
+En caso de agregar tendremos habilitados los campos de texto, excepto el ID, que se genera automáticamente y cuando todos esten completos (Si no aparece un mensaje de error) pulsamos aceptar para agregar el socio a la BD. 
+En caso de modificar, inicialmente, tendremos habilitado solo el id. Cuando introduzcamos el identificador y pulsemos la lupa, si existe el socio, se habilitarán el resto de elementos del formulario, que tendran como valores
+los datos originales del socio con el id seleccionado. Estos se pueden modificar y al pulsar aceptar, se actualizará el socio en la BD.
+En caso de eliminar, el procedimiento sería el mismo que en modificar, solo que no tendremos habilitados el resto de campos distintos al id en ningún momento. Cuando pulsemos aceptar, nos aparece un mensaje de confirmación, en el cual
+si seleccionamos que si, se borra el registro, con el ID indicado de la BD
+En caso de consultar, el procedimiento sería el mismo que eliminar, solo que con las opciones de aceptar y cancelar deshabilitadas, ya que si se desea hacer una modificación o borrado de esos datos, hay que desplazarse a la opción de menú 
+correspondiente.
+
 
 ## Form 6
 
 ![Interfaces5](https://github.com/user-attachments/assets/ffc3b9d7-f028-4bfb-a73c-14449b417f25)
-
+En este formulario se realiza la gestión de los préstamos. Se puede presentar de varios modos, Agregar, modificar, eliminar y consultar, segun la opción de menú seleccionada. 
+En caso de alquilar, tendremos habilitados los campos de texto, excepto el ID, que se genera automáticamente y cuando todos esten completos (Si no aparece un mensaje de error) pulsamos aceptar para agregar el préstamo a la BD. 
+En caso de modificar, inicialmente, tendremos habilitado solo el id. Cuando introduzcamos el identificador y pulsemos la lupa, si existe el préstamo, se habilitarán el resto de elementos del formulario, que tendran como valores
+los datos originales del préstamo con el id seleccionado. Estos se pueden modificar y al pulsar aceptar, se actualizará el préstamo en la BD.
+En caso de devolver, el procedimiento sería el mismo que en modificar, solo que no tendremos habilitados el resto de campos distintos al id en ningún momento. Cuando pulsemos aceptar, nos aparece un mensaje de confirmación, en el cual
+si seleccionamos que si, se borra el registro, con el ID indicado de la BD
+En caso de consultar, el procedimiento sería el mismo que eliminar, solo que con las opciones de aceptar y cancelar deshabilitadas, ya que si se desea hacer una modificación o borrado de esos datos, hay que desplazarse a la opción de menú 
+correspondiente.
 
 ## Usabilidad
 
